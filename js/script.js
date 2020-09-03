@@ -137,6 +137,15 @@ button.addEventListener('click', dynamicSearch);
 
 input.addEventListener('keyup', dynamicSearch);
 
+// Adding the elements to display, when necessary, the message for No results
+
+const divPage = document.querySelector('div.page');
+const divNoResults = document.createElement('div');
+divNoResults.innerHTML = '<strong>No results found</strong>';
+divNoResults.style.color = 'tomato';
+divPage.appendChild(divNoResults);
+divNoResults.style.display = 'none';
+
 
 function dynamicSearch() {
    inputValue = input.value.toUpperCase();
@@ -146,12 +155,11 @@ function dynamicSearch() {
          filteredList.push(data[i]);
       }
    }
-   if (filteredList.length = 0) {
-      const divPage = document.querySelector('div .page');
-      const divNoResults = document.createElement('div');
-      divNoResults.innerHTML = '<strong>No results found</strong>';
-      divNoResults.style.color = 'tomato';
-   }
+
+   if (filteredList.length === 0) {
+      divNoResults.style.display = 'initial';
+   } else divNoResults.style.display = 'none';
+   
    currentData = filteredList;
    showPage(currentData, 1);
    addPagination(currentData);
