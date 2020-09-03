@@ -10,6 +10,21 @@ For assistance:
 */
 
 
+function createElement (tagName, tagClassName, tagAttribute1, valueAttribute1, tagAttribute2, valueAttribute2) {
+   const tag = document.createElement(tagName);
+   if (tagClassName) {
+      tag.className = tagClassName;
+   }
+   if (tagAttribute1) {
+      tag[tagAttribute1] = valueAttribute1;
+   }
+   if (tagAttribute2) {
+      tag[tagAttribute2] = valueAttribute2;
+   }
+   return tag;
+}
+
+
 
 /*
 Create the `showPage` function
@@ -17,10 +32,8 @@ This function will create and insert/append the elements needed to display a "pa
 */
 function showPage(list, page) {
    const itemsPerPage = 9;
-   
    const startIndex = (page * itemsPerPage) - itemsPerPage;
    const endIndex = page * itemsPerPage;
-   
    const ul = document.querySelector('.student-list');
    ul.innerHTML = '';
 
@@ -28,31 +41,22 @@ function showPage(list, page) {
       
       if ( i >= startIndex && i <= endIndex ) {
          
-         function createElement (tagName, tagClassName) {
-            const tag = document.createElement(tagName);
-            if (tagClassName) {
-               tag.className = tagClassName;
-            }
-            return tag;
-         }
-
          const li = createElement('li', 'student-item cf');
          const divStudentDetails = createElement('div', 'student-details');
-         const img = createElement('img', 'avatar');
+         const imgAvatar = createElement('img', 'avatar', 'alt', 'Profile Picture');
          const h3 = createElement('h3', '');
          const spanEmail = createElement('span', 'email');
          const divJoinedDetails = createElement('div', 'joined-details');
          const spanDate = createElement('span', 'date');
 
-         img.src = list[i].picture.large;
-         img.alt = 'Profile Picture';
+         imgAvatar.src = list[i].picture.large;
          h3.textContent = list[i].name.first + ' ' + list[i].name.last;
          spanEmail.textContent = list[i].email;
          spanDate.textContent = 'Joined ' + list[i].registered.date;
 
          ul.appendChild(li);
          li.appendChild(divStudentDetails);
-         divStudentDetails.appendChild(img);
+         divStudentDetails.appendChild(imgAvatar);
          divStudentDetails.appendChild(h3);
          divStudentDetails.appendChild(spanEmail);
          li.appendChild(divJoinedDetails);
@@ -90,17 +94,44 @@ function addPagination(list) {
       if (e.target.tagName === 'BUTTON') {
          targetButton = e.target;
          let li = ul.children;
+         targetButton.className = 'active';
          for (let i = 0; i < li.length; i += 1) {
-            li[i].firstElementChild.className = '';
+            if (i != targetButton.textContent - 1) {
+               li[i].firstElementChild.className = '';
+            }
          }
-         e.target.className = 'active';
-         showPage(data, 3)
+         showPage(data, targetButton.textContent);
       }
    });
-
 }
-
 
 // Call functions
 showPage(data, 1);
 addPagination(data);
+
+
+/****** For extra credit ******/
+
+// Adding a Search Component
+
+const h2 = document.querySelector('header');
+const label = createElement('label', 'student-search', 'for', 'search');
+const input = createElement('input', '', 'id', 'search', 'placeholder', 'Search by name...');
+const button = createElement('button', '', 'type', 'button');
+const imgSearch = createElement('img', '', 'src', 'img/icn-search.svg', 'alt', 'Search icon');
+
+h2.appendChild(label);
+label.appendChild(input);
+label.appendChild(button);
+button.appendChild(imgSearch);
+
+// Adding Functionality to the Search Component
+
+inputValue = input.value.toUpperCase();
+console.log(inputValue);
+
+button.addEventListener('click', (e) => {
+   for (let i = 0; i < list.length; i += 1) {
+      if ()      
+   }
+});
