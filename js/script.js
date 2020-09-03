@@ -33,7 +33,7 @@ This function will create and insert/append the elements needed to display a "pa
 function showPage(list, page) {
    const itemsPerPage = 9;
    const startIndex = (page * itemsPerPage) - itemsPerPage;
-   const endIndex = page * itemsPerPage;
+   const endIndex = page * itemsPerPage - 1;
    const ul = document.querySelector('.student-list');
    ul.innerHTML = '';
 
@@ -78,36 +78,40 @@ function addPagination(list) {
    const ul = document.querySelector('.link-list');
    ul.innerHTML = '';
 
-   for (let i = 1; i <= numberButtons; i += 1) {
-      const li = document.createElement('li');
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = i;
-      li.appendChild(button);
-      ul.appendChild(li);
-   }
-
-   const firstButton = ul.querySelector('li');
-   firstButton.className = 'active';
-   
-   ul.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') {
-         targetButton = e.target;
-         let li = ul.children;
-         targetButton.className = 'active';
-         for (let i = 0; i < li.length; i += 1) {
-            if (i != targetButton.textContent - 1) {
-               li[i].firstElementChild.className = '';
-            }
-         }
-         showPage(data, targetButton.textContent);
+   if (numberButtons > 1) {
+      for (let i = 1; i <= numberButtons; i += 1) {
+         const li = document.createElement('li');
+         const button = document.createElement('button');
+         button.type = 'button';
+         button.textContent = i;
+         li.appendChild(button);
+         ul.appendChild(li);
       }
-   });
+
+      const firstButton = ul.querySelector('li');
+      firstButton.className = 'active';
+      
+      ul.addEventListener('click', (e) => {
+         if (e.target.tagName === 'BUTTON') {
+            targetButton = e.target;
+            let li = ul.children;
+            targetButton.className = 'active';
+            for (let i = 0; i < li.length; i += 1) {
+               if (i != targetButton.textContent - 1) {
+                  li[i].firstElementChild.className = '';
+               }
+            }
+            showPage(currentData, targetButton.textContent);
+         }
+      });
+   }
 }
 
+let currentData = data;
+
 // Call functions
-showPage(data, 1);
-addPagination(data);
+showPage(currentData, 1);
+addPagination(currentData);
 
 
 /****** For extra credit ******/
@@ -127,11 +131,28 @@ button.appendChild(imgSearch);
 
 // Adding Functionality to the Search Component
 
-inputValue = input.value.toUpperCase();
-console.log(inputValue);
+button.addEventListener('click', dynamicSearch);
 
-button.addEventListener('click', (e) => {
-   for (let i = 0; i < list.length; i += 1) {
-      if ()      
+// Improving functionality by adding a keyup event listener
+
+input.addEventListener('keyup', dynamicSearch);
+
+
+function dynamicSearch() {
+   inputValue = input.value.toUpperCase();
+   filteredList = [];
+   for (let i = 0; i < data.length; i += 1) {
+      if ( data[i].name.first.toUpperCase().includes(inputValue) || data[i].name.last.toUpperCase().includes(inputValue) ) {
+         filteredList.push(data[i]);
+      }
    }
-});
+   if (filteredList.length = 0) {
+      const divPage = document.querySelector('div .page');
+      const divNoResults = document.createElement('div');
+      divNoResults.innerHTML = '<strong>No results found</strong>';
+      divNoResults.style.color = 'tomato';
+   }
+   currentData = filteredList;
+   showPage(currentData, 1);
+   addPagination(currentData);
+}
