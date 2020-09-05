@@ -12,31 +12,37 @@ For assistance:
 
 /***
  * `createElement` function:
- * This function will create a dynamic DOM element and set its ClassName as well as two extra attributes.
- * In case the desired DOM element not need a Class as well as 1 or 2 of the possible extra attributes, the function will receive an empty string for the corresponding parameters. 
- * The empty string is "Falsy" and will not trigger the corresponding 'if statement'.
- * The function returns the DOM element.
+ * This function creates a HTML element and sets up to 4 (optional) attributes to the element.
+ * In case the desired HTML element does not need one or more of the above mentioned attributes, the function will receive for the corresponding parameter an empty string as argument. 
+ * The empty string is "Falsy" and will not trigger the corresponding 'if statement' that sets the corresponding attribute to the element object.
+ * The function returns the HTML element.
  * 
  * @param {string} tagName - Set which HTML element / HTML tag will be created in the function (e.g. 'p', 'div', 'input', 'li')
- * @param {string} tagClassName - Set the Class of the HTML element
- * @param {string} tagAttribute1 - Define a first extra attribute for the HTML element. If the extra attribute is not needed, the function will be called with an empty string as argument. 
- * @param {string or number} valueAttribute1 - Define the value of the first extra attribute that will be set for the HTML element
- * @param {string} tagAttribute2 - Define a second extra attribute for the HTML element. If the extra attribute is not needed, the function will be called with an empty string as argument. 
- * @param {string or number} valueAttribute2 - Define the value of the second extra attribute that will be set for the HTML element
+ * @param {string} tagAttribute1 - Define an optional first extra attribute for the HTML element.
+ * @param {string|number} valueAttribute1 - Define the value of the above mentioned attribute
+ * @param {string} tagAttribute2 - Define an optional second extra attribute for the HTML element.
+ * @param {string|number} valueAttribute2 - Define the value of the above mentioned attribute.
+ * @param {string} tagAttribute3 - Define an optional third extra attribute for the HTML element.
+ * @param {string|number} valueAttribute3 - Define the value of the above mentioned attribute.
+ * @param {string} tagAttribute4 - Define an optional forth extra attribute for the HTML element.
+ * @param {string|number} valueAttribute4 - Define the value of the above mentioned attribute.
  * @returns {Object} A DOM element / HTML element
  * 
  */
 
-function createElement (tagName, tagClassName, tagAttribute1, valueAttribute1, tagAttribute2, valueAttribute2) {
+function createElement(tagName, tagAttribute1, valueAttribute1, tagAttribute2, valueAttribute2, tagAttribute3, valueAttribute3, tagAttribute4, valueAttribute4) {
    const tag = document.createElement(tagName);
-   if (tagClassName) {
-      tag.className = tagClassName;
-   }
    if (tagAttribute1) {
       tag[tagAttribute1] = valueAttribute1;
    }
    if (tagAttribute2) {
       tag[tagAttribute2] = valueAttribute2;
+   }
+   if (tagAttribute3) {
+      tag[tagAttribute3] = valueAttribute3;
+   }
+   if (tagAttribute4) {
+      tag[tagAttribute4] = valueAttribute4;
    }
    return tag;
 }
@@ -64,19 +70,13 @@ function showPage(list, page) {
       if ( i >= startIndex && i <= endIndex ) {
          
          // Creating the HTML elements via the 'createElement' function
-         const li = createElement('li', 'student-item cf');
-         const divStudentDetails = createElement('div', 'student-details');
-         const imgAvatar = createElement('img', 'avatar', 'alt', 'Profile Picture');
-         const h3 = createElement('h3', '');
-         const spanEmail = createElement('span', 'email');
-         const divJoinedDetails = createElement('div', 'joined-details');
-         const spanDate = createElement('span', 'date');
-
-         // Setting further attributes that are dynamically determined i.e. dependend of the index of the list array
-         imgAvatar.src = list[i].picture.large;
-         h3.textContent = list[i].name.first + ' ' + list[i].name.last;
-         spanEmail.textContent = list[i].email;
-         spanDate.textContent = 'Joined ' + list[i].registered.date;
+         const li = createElement('li', 'className', 'student-item cf');
+         const divStudentDetails = createElement('div', 'className', 'student-details');
+         const imgAvatar = createElement('img', 'className', 'avatar', 'src', list[i].picture.large, 'alt', 'Profile Picture');
+         const h3 = createElement('h3', 'textContent', list[i].name.first + ' ' + list[i].name.last);
+         const spanEmail = createElement('span', 'className', 'email', 'textContent', list[i].email);
+         const divJoinedDetails = createElement('div', 'className', 'joined-details');
+         const spanDate = createElement('span', 'className', 'date', 'textContent', 'Joined ' + list[i].registered.date);
 
          // Appending the HTML elements to the HTML file
          ul.appendChild(li);
@@ -104,26 +104,22 @@ function showPage(list, page) {
 function addPagination(list) {
    const itemsPerPage = 9;
    const numberButtons = Math.ceil(list.length / itemsPerPage);
-
    const ul = document.querySelector('.link-list');
    ul.innerHTML = '';
 
-   // Creating the HTML elements for each Button. In case the page only needs 1 button, then no button will be create.
+   // Creating the HTML elements for each Button. In case the page only needs 1 button, no button will be created.
    if (numberButtons > 1) {
       for (let i = 1; i <= numberButtons; i += 1) {
-         const li = document.createElement('li');
-         const button = document.createElement('button');
-         button.type = 'button';
-         button.textContent = i;
-         li.appendChild(button);
+         const li = createElement('li');
+         const button = createElement('button', 'type', 'button', 'textContent', i);
          ul.appendChild(li);
+         li.appendChild(button);
       }
 
       // Activating the first button by default
-      const firstButton = ul.querySelector('li').children[0];
-      firstButton.className = 'active';
+      ul.querySelector('li').children[0].className = 'active';
       
-      // After a 'click', it activates the clicked button, removes the class 'active' of all other buttons and shows the corresponding page.
+      // After a 'click', it 'activates' the clicked button, removes the class 'active' of all other buttons and shows the corresponding page.
       ul.addEventListener('click', (e) => {
          if (e.target.tagName === 'BUTTON') {
             targetButton = e.target;
@@ -142,7 +138,7 @@ function addPagination(list) {
 }
 
 
-// Setting a the list of student objects to a 'let' global variable. This 'currentData' variable will be dynamically changed according to the search bar. 
+// Setting a the list of student objects to a 'let' global variable. The 'currentData' variable will be dynamically changed according to the search bar. 
 let currentData = data;
 
 // Call functions
@@ -155,39 +151,57 @@ addPagination(currentData);
 // Adding a Search Component
 
 const header = document.querySelector('header');
-const label = createElement('label', 'student-search', 'for', 'search');
-const input = createElement('input', '', 'id', 'search', 'placeholder', 'Search by name...');
-const button = createElement('button', '', 'type', 'button');
-const imgSearch = createElement('img', '', 'src', 'img/icn-search.svg', 'alt', 'Search icon');
+const label = createElement('label', 'htmlFor', 'search', 'className', 'student-search');
+const input = createElement('input', 'id', 'search', 'placeholder', 'Search by name...');
+const searchButton = createElement('button', 'type', 'button');
+const imgSearch = createElement('img', 'src', 'img/icn-search.svg', 'alt', 'Search icon');
 
 header.appendChild(label);
 label.appendChild(input);
-label.appendChild(button);
-button.appendChild(imgSearch);
+label.appendChild(searchButton);
+searchButton.appendChild(imgSearch);
 
 // Adding Functionality to the Search Component
 
-button.addEventListener('click', dynamicSearch);
+searchButton.addEventListener('click', dynamicSearch);
 
 // Improving functionality by adding a keyup event listener
 
 input.addEventListener('keyup', dynamicSearch);
 
-// Adding the HTML elements to display the message "No results found" when applicable
+// Adding the HTML elements to display the message "No results found". 
 
-const divPage = document.querySelector('div.page');
-const divNoResults = document.createElement('div');
-divNoResults.innerHTML = 'No results found';
+const body = document.querySelector('body');
+const divNoResults = createElement('div', 'className', 'js-noresults');
+const pNoResults = createElement('p', 'textContent', 'No results found');
+
 divNoResults.style.color = 'tomato';
-divPage.appendChild(divNoResults);
+divNoResults.style.textAlign = 'center';
+divNoResults.style.fontSize = '20px';
+divNoResults.style.fontWeight = 'bold';
 divNoResults.style.display = 'none';
+body.appendChild(divNoResults);
+divNoResults.appendChild(pNoResults);
+
+// I wanted to improve the program further by adding a second button, 'Reset', that will substitute the 'magnifying glass' button in case no results are found.
+// By clicking this button, the list will reset to its default state (all students).
+
+const resetButton = createElement('button', 'type', 'button', 'textContent', 'Reset');
+searchButton.style.display = 'initial';
+resetButton.style.display = 'none';
+label.appendChild(resetButton);
+
+resetButton.addEventListener('click', () => {
+   input.value = '';
+   dynamicSearch();
+});
 
 
 /***
  * `dynamicSearch` function:
- * This function is attached to both Event Listeners of the Search Component.
+ * This function is attached to both Event Listeners of the Search Component and is also called inside the Event Handler of the Reset Button.
  * It searches the whole array of student objects and checks if the first or the last name of the students 'includes' the 'input value' from the Search Field.
- * Once it includes, the function 'pushes' the whole array element to the array 'filteredList'. 
+ * If it includes, the function 'pushes' the whole array element to the array 'filteredList'. 
  * Finally, the global variable 'currentData' is rewritten with the 'filteredList' and passed to the functions 'showPage' and 'addPagination'.
  * 
  * @returns
@@ -197,17 +211,47 @@ divNoResults.style.display = 'none';
 function dynamicSearch() {
    const inputValue = input.value.toUpperCase();
    const filteredList = [];
+
    for (let i = 0; i < data.length; i += 1) {
       if ( data[i].name.first.toUpperCase().includes(inputValue) || data[i].name.last.toUpperCase().includes(inputValue) ) {
          filteredList.push(data[i]);
       }
    }
 
-   // If no match is found, the text for 'No results found' is made visible.
-   if (filteredList.length === 0) {
-      divNoResults.style.display = 'initial';
-   } else divNoResults.style.display = 'none';
    
+   /*** 
+   * Handling 'keyup' events
+   * Make the text 'No results found' and the 'Reset button' visible. 
+   * I improved this 'if statement' so that the program does not go unnecessarily inside it (for example, if no student is being shown BUT the searchButton is already invisible).
+   */
+   if (window.event.target.tagName !== 'BUTTON' && window.event.target.tagName !== 'IMG') {
+      if (filteredList.length === 0 && searchButton.style.display === 'initial') {
+         divNoResults.style.display = 'initial';
+         resetButton.style.display = 'initial';
+         searchButton.style.display = 'none';
+      }  else if (filteredList.length !== 0 && searchButton.style.display === 'none') {
+         divNoResults.style.display = 'none';
+         resetButton.style.display = 'none';
+         searchButton.style.display = 'initial';
+      }
+   }
+   
+   /***
+    * Handling 'click' events
+    * Cleaning the search bar and changing accordinly the the 'reset button' for the 'magnifying glass button' or vice-versa
+    */
+   if (window.event.target.tagName === 'BUTTON' || window.event.target.tagName === 'IMG') {
+      if (searchButton.style.display === 'initial') {
+         input.value = '';
+         resetButton.style.display = 'initial';
+         searchButton.style.display = 'none';
+      } else if (resetButton.style.display === 'initial') {
+         divNoResults.style.display = 'none';
+         resetButton.style.display = 'none';
+         searchButton.style.display = 'initial';
+      }
+   }
+
    currentData = filteredList;
    showPage(currentData, 1);
    addPagination(currentData);
