@@ -183,8 +183,11 @@ divNoResults.style.display = 'none';
 body.appendChild(divNoResults);
 divNoResults.appendChild(pNoResults);
 
-// I wanted to improve the program further by adding a second button, 'Reset', that will substitute the 'magnifying glass' button in case no results are found.
-// By clicking this button, the list will reset to its default state (all students).
+
+// I wanted to improve the program further by adding a second button, 'Reset', that will substitute the 'magnifying glass' button in following cases: 
+// 1- No results were found.
+// 2- The 'magnifying glass' button was clicked and a filtered list is being shown.
+// By clicking the reset button, the students list i.e. the visualization will reset to its default state (all students).
 
 const resetButton = createElement('button', 'type', 'button', 'textContent', 'Reset');
 searchButton.style.display = 'initial';
@@ -218,7 +221,6 @@ function dynamicSearch() {
       }
    }
 
-   
    /*** 
    * Handling 'keyup' events
    * Make the text 'No results found' and the 'Reset button' visible. 
