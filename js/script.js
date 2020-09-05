@@ -59,10 +59,13 @@ function createElement(tagName, tagAttribute1, valueAttribute1, tagAttribute2, v
  */
 
 function showPage(list, page) {
-   const itemsPerPage = 9;
+   
+   // Easy mathematical logic to calculate the start and the end index of the students array (itemsPerPage is a global variable - see comments below).
    const startIndex = (page * itemsPerPage) - itemsPerPage;
    const endIndex = page * itemsPerPage - 1;
-   const ul = document.querySelector('.student-list');
+   
+   // Selecting the ul element and removing any students previously displayed.
+   const ul = document.querySelector('ul.student-list');
    ul.innerHTML = '';
 
    for (let i = 0; i < list.length; i += 1) {
@@ -102,9 +105,12 @@ function showPage(list, page) {
  */
 
 function addPagination(list) {
-   const itemsPerPage = 9;
+   
+   // Easy mathematical logic to calculate how many buttons should be displayed (itemsPerPage is a global variable - see comments below).
    const numberButtons = Math.ceil(list.length / itemsPerPage);
-   const ul = document.querySelector('.link-list');
+   
+   // Selecting the ul element and removing any pagination buttons previously displayed.
+   const ul = document.querySelector('ul.link-list');
    ul.innerHTML = '';
 
    // Creating the HTML elements for each Button. In case the page only needs 1 button, no button will be created.
@@ -140,6 +146,10 @@ function addPagination(list) {
 
 // Setting a the list of student objects to a 'let' global variable. The 'currentData' variable will be dynamically changed according to the search bar. 
 let currentData = data;
+
+// Declaring this as a global variable, so that it appears only one time in the code and remains consistent in case one decides to change it. 
+// I declared it as a 'let' variable to be able to change it via console and test the versatility of the program. 
+let itemsPerPage = 9;
 
 // Call functions
 showPage(currentData, 1);
