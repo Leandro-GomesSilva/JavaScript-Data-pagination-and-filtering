@@ -4,4 +4,4 @@
  Main technologies: JavaScript<br>
  Auxiliary technologies: HTML, CSS<br>
  Complexity level: Beginner<br>
- Concepts: Pagination, Event Object, Event listeners, DOM traversing, DOM element creation, HTML elements<br>
+ Concepts: Pagination, Event Object, Event listeners, DOM manipulation, HTML elements<br>
