@@ -4,4 +4,5 @@
  Main technologies: JavaScript<br>
  Auxiliary technologies: HTML, CSS<br>
  Complexity level: Beginner<br>
+ Estimated Time to Complete: 13 hours<br>
  Concepts: Pagination, Event Object, Event listeners, DOM manipulation, HTML elements<br>
