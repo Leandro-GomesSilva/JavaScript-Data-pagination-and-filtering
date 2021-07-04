@@ -6,3 +6,11 @@
  Complexity level: Beginner<br>
  Estimated Time to Complete: 13 hours<br>
  Concepts: Pagination, Event Object, Event listeners, DOM manipulation, HTML elements<br>
+
+## For "Exceeds Requirements":
+  - JavaScript dinamically appends HTML for the search bar
+  - Number of pagination buttons change based on how many results are returned
+  - Friendly message in case search yields 0 results
+
+## Extras:
+  - 'Search button' changes to 'Reset button' after a Search is performed or if 0 results are yield
